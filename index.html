@@ -1,0 +1,1163 @@
+<title>ยังไม่เสร็จ</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<style>
+/* ── tokens ──────────────────────────────────────────────────────────────── */
+:root {
+  --ground:   #DEDFD8;
+  --slab:     #F3F3EE;
+  --slab-2:   #E7E8E0;
+  --ink:      #1B1F1B;
+  --ink-2:    #575D56;
+  --ink-3:    #868C84;
+  --line:     #C4C6BB;
+  --line-2:   #D4D6CC;
+  --accent:   #B82A62;
+  --accent-2: #8E1F4B;
+  --accent-wash: rgba(184, 42, 98, .10);
+  --st-unfinished: #BF5518;
+  --st-abandoned:  #6A7068;
+  --st-unused:     #3D6483;
+  --map-land:  #E9EAE2;
+  --map-void:  #D6D8CF;
+
+  --display: 'Chakra Petch', 'IBM Plex Sans Thai', system-ui, sans-serif;
+  --body:    'IBM Plex Sans Thai', system-ui, -apple-system, sans-serif;
+  --mono:    'IBM Plex Mono', ui-monospace, monospace;
+
+  --r: 3px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground:   #141712;
+    --slab:     #1D211B;
+    --slab-2:   #262B24;
+    --ink:      #E8E9E0;
+    --ink-2:    #9CA298;
+    --ink-3:    #757B71;
+    --line:     #333931;
+    --line-2:   #2A2F28;
+    --accent:   #F0568F;
+    --accent-2: #F885AE;
+    --accent-wash: rgba(240, 86, 143, .14);
+    --st-unfinished: #E07C3E;
+    --st-abandoned:  #8E948A;
+    --st-unused:     #6FA0C6;
+    --map-land:  #22271F;
+    --map-void:  #191D17;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --ground:   #141712;
+  --slab:     #1D211B;
+  --slab-2:   #262B24;
+  --ink:      #E8E9E0;
+  --ink-2:    #9CA298;
+  --ink-3:    #757B71;
+  --line:     #333931;
+  --line-2:   #2A2F28;
+  --accent:   #F0568F;
+  --accent-2: #F885AE;
+  --accent-wash: rgba(240, 86, 143, .14);
+  --st-unfinished: #E07C3E;
+  --st-abandoned:  #8E948A;
+  --st-unused:     #6FA0C6;
+  --map-land:  #22271F;
+  --map-void:  #191D17;
+  color-scheme: dark;
+}
+
+/* ── base ────────────────────────────────────────────────────────────────── */
+* { box-sizing: border-box; }
+body {
+  background: var(--ground);
+  color: var(--ink);
+  font: 400 15px/1.65 var(--body);
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+}
+.wrap { width: 100%; max-width: 1240px; margin: 0 auto; padding-inline: 18px; }
+h1, h2, h3 { font-family: var(--display); font-weight: 600; margin: 0; text-wrap: balance; }
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.eyebrow {
+  font: 500 11px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+/* ── header ──────────────────────────────────────────────────────────────── */
+header.top {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30;
+  background: color-mix(in srgb, var(--ground) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.top-in { display: flex; align-items: center; gap: 14px; padding-block: 11px; }
+.mark { display: flex; align-items: baseline; gap: 9px; min-width: 0; }
+.mark b {
+  font: 700 21px/1 var(--display); letter-spacing: -.01em;
+  position: relative; white-space: nowrap;
+}
+.mark b::after {            /* เส้นค้างครึ่งทาง — เหล็กเส้นที่ยังไม่ได้เทต่อ */
+  content: ''; position: absolute; left: 0; right: 42%; bottom: -5px;
+  height: 2px; background: var(--accent);
+}
+.mark span {
+  font: 400 12.5px/1 var(--body); color: var(--ink-2);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.top-sp { flex: 1; }
+.ghost {
+  font: 500 12px/1 var(--body); color: var(--ink-2);
+  background: transparent; border: 1px solid var(--line);
+  border-radius: var(--r); padding: 7px 11px; cursor: pointer;
+}
+.ghost:hover { color: var(--ink); border-color: var(--ink-3); }
+
+/* ── notice ──────────────────────────────────────────────────────────────── */
+.notice {
+  display: grid; grid-template-columns: max-content 1fr; gap: 12px;
+  align-items: start; margin-top: 18px; padding: 13px 15px;
+  background: var(--accent-wash);
+  border: 1px solid color-mix(in srgb, var(--accent) 34%, transparent);
+  border-radius: var(--r);
+  font-size: 13.5px; line-height: 1.6;
+}
+.notice p { margin: 0; color: var(--ink-2); }
+.notice p + p { margin-top: 5px; }
+.notice strong { color: var(--ink); font-family: var(--display); font-weight: 600; }
+
+/* ── hero ────────────────────────────────────────────────────────────────── */
+.hero { padding-block: 28px 20px; }
+.hero h1 { font-size: clamp(27px, 5.2vw, 42px); line-height: 1.16; letter-spacing: -.015em; max-width: 25ch; }
+.hero .lede { margin: 12px 0 0; max-width: 62ch; color: var(--ink-2); font-size: 15.5px; }
+.hero .lede em { color: var(--ink); font-style: normal; }
+
+/* ── stats ───────────────────────────────────────────────────────────────── */
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--ink-3); margin-top: 22px; }
+.stat { padding: 13px 14px 14px 0; }
+.stat + .stat { border-left: 1px solid var(--line); padding-left: 14px; }
+.stat dt { font: 500 10.5px/1.3 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
+.stat dd {
+  margin: 7px 0 0; font-family: var(--display); font-weight: 600;
+  font-size: clamp(21px, 3.4vw, 30px); line-height: 1; letter-spacing: -.01em;
+  font-variant-numeric: tabular-nums;
+}
+.stat dd small { font-size: 12px; font-weight: 500; color: var(--ink-2); margin-left: 4px; letter-spacing: 0; }
+.stat.gap dd { color: var(--accent); }
+
+/* ── filters ─────────────────────────────────────────────────────────────── */
+.filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding-block: 18px 14px; }
+.search { position: relative; flex: 1 1 200px; min-width: 0; }
+.search input {
+  width: 100%; font: 400 13.5px/1 var(--body); color: var(--ink);
+  background: var(--slab); border: 1px solid var(--line);
+  border-radius: var(--r); padding: 9px 11px 9px 30px;
+}
+.search input::placeholder { color: var(--ink-3); }
+.search svg { position: absolute; left: 9px; top: 50%; translate: 0 -50%; color: var(--ink-3); }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip {
+  font: 500 12.5px/1 var(--body); color: var(--ink-2); cursor: pointer;
+  background: var(--slab); border: 1px solid var(--line);
+  border-radius: 999px; padding: 8px 12px;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.chip:hover { color: var(--ink); }
+.chip .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.chip[aria-pressed="true"] { color: var(--ground); background: var(--ink); border-color: var(--ink); }
+.chip[aria-pressed="true"] .n { color: color-mix(in srgb, var(--ground) 72%, var(--ink)); }
+.chip .n { font-family: var(--mono); font-size: 11px; color: var(--ink-3); }
+select.pick {
+  font: 500 12.5px/1 var(--body); color: var(--ink-2);
+  background: var(--slab); border: 1px solid var(--line);
+  border-radius: var(--r); padding: 8px 10px; cursor: pointer; max-width: 100%;
+}
+
+/* ── main split ──────────────────────────────────────────────────────────── */
+.split {
+  display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: 18px; align-items: start; padding-bottom: 34px;
+}
+.panel { background: var(--slab); border: 1px solid var(--line); border-radius: var(--r); }
+.panel-hd { display: flex; align-items: center; gap: 10px; padding: 11px 13px; border-bottom: 1px solid var(--line-2); }
+.panel-hd h2 { font-size: 14px; min-width: 0; overflow-wrap: anywhere; }
+.panel-hd .sp { flex: 1; }
+
+/* map */
+.mapwrap { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 60px); }
+.mapbox { position: relative; background: var(--map-void); }
+#map { display: block; width: 100%; height: auto; touch-action: pan-y; }
+.legend {
+  display: flex; flex-wrap: wrap; gap: 7px 14px; align-items: center;
+  padding: 10px 13px; border-top: 1px solid var(--line-2);
+  font: 400 11.5px/1.4 var(--body); color: var(--ink-2);
+}
+.legend i { display: inline-flex; align-items: center; gap: 6px; font-style: normal; }
+.legend .bub {
+  width: 17px; height: 17px; border-radius: 50%;
+  border: 1.4px solid var(--accent); background: var(--accent-wash);
+  display: grid; place-content: center;
+  font: 500 9px/1 var(--mono); color: var(--accent);
+}
+.legend .off { color: var(--ink-3); }
+.tip {
+  position: absolute; pointer-events: none; z-index: 5;
+  background: var(--ink); color: var(--ground);
+  font: 500 11.5px/1.4 var(--body);
+  padding: 6px 9px; border-radius: var(--r); white-space: nowrap;
+  translate: -50% calc(-100% - 12px);
+}
+.tip .num { font-size: 10.5px; opacity: .74; }
+
+/* list */
+.list { max-height: 72vh; overflow-y: auto; }
+.row {
+  display: grid; grid-template-columns: 3px 1fr auto; gap: 0 12px;
+  width: 100%; text-align: left; cursor: pointer;
+  background: transparent; border: 0; border-bottom: 1px solid var(--line-2);
+  padding: 0; font: inherit; color: inherit;
+}
+.row:last-child { border-bottom: 0; }
+.row .stripe { background: var(--sc); }
+.row .body { padding: 11px 0 12px; min-width: 0; }
+.row .aside { padding: 11px 13px 12px 0; text-align: right; white-space: nowrap; }
+.row:hover .nm, .row[aria-current="true"] .nm { color: var(--accent); }
+.row[aria-current="true"] { background: var(--slab-2); }
+.row .nm { font: 600 14px/1.4 var(--display); display: block; overflow-wrap: anywhere; }
+.row .meta { font-size: 12.5px; color: var(--ink-2); margin-top: 2px; }
+.row .meta .sep { color: var(--ink-3); margin-inline: 5px; }
+.row .st { font: 500 11px/1 var(--body); color: var(--sc); }
+.row .bd { font: 500 12.5px/1 var(--mono); font-variant-numeric: tabular-nums; margin-top: 7px; display: block; }
+.row .bd u { text-decoration: none; color: var(--ink-3); font-size: 10.5px; margin-left: 2px; }
+.row .bd.none { color: var(--ink-3); font-weight: 400; }
+.meter { margin-top: 7px; width: 86px; height: 3px; background: var(--line); position: relative; margin-left: auto; }
+.meter b { position: absolute; inset: 0 auto 0 0; background: var(--sc); }
+.empty { padding: 30px 14px; text-align: center; color: var(--ink-2); font-size: 13.5px; }
+
+/* detail */
+.detail { margin-top: 18px; }
+.plate {
+  aspect-ratio: 16 / 9; max-width: 100%;
+  display: grid; place-content: center; gap: 5px; text-align: center;
+  border-bottom: 1px solid var(--line-2);
+  background:
+    repeating-linear-gradient(135deg, transparent 0 9px,
+      color-mix(in srgb, var(--ink) 5%, transparent) 9px 10px),
+    var(--slab-2);
+  color: var(--ink-3); padding-inline: 16px;
+}
+.plate span { font: 500 12px/1 var(--mono); letter-spacing: .08em; }
+.plate small { font-size: 11.5px; }
+.plate img { width: 100%; height: 100%; object-fit: cover; }
+.dl { display: grid; grid-template-columns: max-content 1fr; }
+.dl > div { display: contents; }
+.dl dt {
+  font: 500 11px/1.5 var(--mono); letter-spacing: .06em; text-transform: uppercase;
+  color: var(--ink-3); padding: 9px 14px 9px 13px; border-bottom: 1px solid var(--line-2);
+  white-space: nowrap;
+}
+.dl dd { margin: 0; font-size: 13.5px; padding: 9px 13px 9px 0; border-bottom: 1px solid var(--line-2); overflow-wrap: anywhere; }
+.dl dd.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 12.5px; }
+.dl dd.want { color: var(--accent); }
+.acts { display: flex; flex-wrap: wrap; gap: 8px; padding: 13px; }
+.btn {
+  font: 500 12.5px/1 var(--body); cursor: pointer; border-radius: var(--r); padding: 9px 13px;
+  border: 1px solid var(--line); background: var(--slab-2); color: var(--ink);
+  text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+}
+.btn:hover { border-color: var(--ink-3); }
+.btn.key { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.key:hover { background: var(--accent-2); border-color: var(--accent-2); }
+.badge {
+  font: 500 10.5px/1 var(--mono); letter-spacing: .06em;
+  border: 1px solid currentColor; border-radius: 999px; padding: 4px 7px; white-space: nowrap;
+}
+.badge.warn { color: var(--accent); }
+.badge.ok { color: var(--st-unused); }
+
+/* ── contribute ──────────────────────────────────────────────────────────── */
+.give { border-top: 1px solid var(--ink-3); padding-block: 30px 44px; }
+.give-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 26px; align-items: start; }
+.give h2 { font-size: clamp(20px, 3.6vw, 26px); letter-spacing: -.01em; }
+.give p { color: var(--ink-2); font-size: 14.5px; max-width: 54ch; }
+.need { list-style: none; margin: 16px 0 0; padding: 0; }
+.need li {
+  display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: baseline;
+  padding: 9px 0; border-bottom: 1px solid var(--line-2); font-size: 13.5px;
+}
+.need li i { font: 500 11px/1.5 var(--mono); color: var(--accent); font-style: normal; }
+.need li b { font-family: var(--display); font-weight: 600; }
+.need li span { color: var(--ink-2); }
+textarea.tpl {
+  width: 100%; min-height: 200px; resize: vertical;
+  font: 400 12.5px/1.75 var(--mono); color: var(--ink);
+  background: var(--slab); border: 1px solid var(--line);
+  border-radius: var(--r); padding: 12px 13px;
+}
+.give-foot { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; }
+.give-foot .said { font-size: 12px; color: var(--ink-3); }
+
+footer.end {
+  border-top: 1px solid var(--line); padding-block: 18px 30px;
+  font-size: 12.5px; color: var(--ink-3);
+  display: flex; flex-wrap: wrap; gap: 4px 16px;
+}
+
+/* ── narrow ──────────────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .split, .give-grid { grid-template-columns: minmax(0, 1fr); }
+  .mapwrap { position: static; }
+  .list { max-height: none; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .stat:nth-child(3) { border-left: 0; padding-left: 0; }
+  .stat:nth-child(3), .stat:nth-child(4) { border-top: 1px solid var(--line); }
+}
+@media (max-width: 430px) {
+  .dl { grid-template-columns: minmax(0, 1fr); }
+  .dl dt { border-bottom: 0; padding-bottom: 0; }
+  .dl dd { padding-left: 13px; }
+  .notice { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+}
+</style>
+
+<header class="top">
+  <div class="wrap top-in">
+    <span class="mark">
+      <b>ยังไม่เสร็จ</b>
+      <span>ทะเบียนตึกร้างของหน่วยงานรัฐ</span>
+    </span>
+    <span class="top-sp"></span>
+    <button class="ghost" id="theme" type="button">โหมดมืด</button>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="hero">
+    <p class="eyebrow">รายการเที่ยวตึกร้างทั่วไทย</p>
+    <h1>ตึกที่รัฐเริ่มสร้าง แล้วไม่มีใครสร้างต่อ</h1>
+    <p class="lede">
+      รวมอาคารของส่วนราชการ องค์กรอิสระ ท้องถิ่น และสถานศึกษา
+      ที่<em>สร้างไม่เสร็จ</em> <em>สร้างเสร็จแต่ไม่เคยเปิดใช้</em> หรือ<em>ถูกทิ้งร้าง</em>
+      — ตั้งต้นจากรายการที่คนช่วยกันรวบรวมไว้ในคอมเมนต์ แล้วเปิดให้เติมรูปกับพิกัดต่อ
+    </p>
+
+    <div class="notice">
+      <span class="badge warn">ยังไม่ยืนยัน</span>
+      <div>
+        <p>
+          <strong>ทั้ง 55 รายการยังไม่มีพิกัด</strong> วงกลมบนแผนที่บอกได้แค่ว่าจังหวัดนั้นมีกี่รายการ
+          ไม่ใช่ตำแหน่งอาคาร — นี่คือสิ่งที่โพสต์ต้นทางขอ และคือช่องว่างที่ยังรอคนช่วยเติม
+        </p>
+        <p>
+          ข้อมูลทั้งหมดมาจากการบอกต่อในคอมเมนต์ <strong>ยังไม่ได้ตรวจสอบกับเอกสารราชการ</strong>
+          ตัวเลขงบประมาณหลายรายการต้นทางใช้คำว่า "ราว" หรือ "กว่า" หน้านี้กำกับไว้ด้วย
+          <span class="num">~</span>
+        </p>
+      </div>
+    </div>
+
+    <dl class="stats" id="stats"></dl>
+  </section>
+
+  <section class="filters" aria-label="ตัวกรอง">
+    <label class="search">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+        <circle cx="6.8" cy="6.8" r="4.6"/><path d="M10.4 10.4 14 14"/>
+      </svg>
+      <input id="q" type="search" placeholder="ค้นชื่ออาคาร หน่วยงาน หรือจังหวัด" autocomplete="off">
+    </label>
+    <div class="chips" id="stchips" role="group" aria-label="สถานะ"></div>
+    <select class="pick" id="province" aria-label="จังหวัด"></select>
+    <select class="pick" id="atype" aria-label="ประเภทหน่วยงาน"></select>
+    <select class="pick" id="sort" aria-label="เรียงลำดับ">
+      <option value="budget">เรียง: งบสูงสุด</option>
+      <option value="progress">เรียง: คืบหน้าน้อยสุด</option>
+      <option value="province">เรียง: จังหวัด</option>
+      <option value="name">เรียง: ชื่ออาคาร</option>
+    </select>
+  </section>
+
+  <section class="split">
+    <div class="mapwrap">
+      <div class="panel">
+        <div class="panel-hd">
+          <h2>กระจายตัวรายจังหวัด</h2>
+          <span class="sp"></span>
+          <span class="eyebrow" id="mapcount"></span>
+        </div>
+        <div class="mapbox" id="mapbox">
+          <canvas id="map"></canvas>
+          <div class="tip" id="tip" hidden></div>
+        </div>
+        <div class="legend" id="legend"></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="panel">
+        <div class="panel-hd">
+          <h2>ไดเรกทอรี</h2>
+          <span class="sp"></span>
+          <span class="eyebrow" id="listcount"></span>
+        </div>
+        <div class="list" id="list"></div>
+      </div>
+      <div class="panel detail" id="detail"></div>
+    </div>
+  </section>
+
+  <section class="give">
+    <div class="give-grid">
+      <div>
+        <p class="eyebrow">ส่งข้อมูลเข้ามา</p>
+        <h2>รายการมีแล้ว ที่ยังขาดคือพิกัดกับรูป</h2>
+        <p>
+          55 รายการนี้รู้แค่ชื่อกับจังหวัด ถ้าคุณผ่านไปเห็นของจริง
+          อย่างน้อยขอ <strong>พิกัด</strong> กับ <strong>รูป</strong> ที่เหลือค่อยตามหาทีหลังได้
+        </p>
+        <ul class="need">
+          <li><i>01</i><span><b>พิกัด</b> — เปิด Google Maps กดค้างที่ตัวอาคาร แล้วคัดลอกตัวเลขสองชุด เช่น <span class="num">18.7883, 98.9853</span></span></li>
+          <li><i>02</i><span><b>รูปถ่าย</b> — เห็นตัวอาคารและป้ายโครงการถ้ามี ถ่ายจากนอกรั้วก็พอ ไม่ต้องเข้าไปในพื้นที่</span></li>
+          <li><i>03</i><span><b>สภาพวันนี้</b> — หลายรายการอ้างอิงรายงานปี 2565 ตอนนี้อาจสร้างต่อเสร็จแล้วหรือทรุดกว่าเดิม</span></li>
+          <li><i>04</i><span><b>ที่มาที่อ้างอิงได้</b> — เลขที่สัญญา รายงาน สตง. หรือข่าว จะช่วยให้เปลี่ยนสถานะเป็น "ตรวจสอบแล้ว" ได้</span></li>
+        </ul>
+      </div>
+      <div>
+        <p class="eyebrow">เทมเพลตกรอกข้อมูล</p>
+        <textarea class="tpl" id="tpl" spellcheck="false" aria-label="เทมเพลตกรอกข้อมูล"></textarea>
+        <div class="give-foot">
+          <button class="btn key" id="copytpl" type="button">คัดลอกเทมเพลต</button>
+          <a class="btn" target="_blank" rel="noopener"
+             href="https://www.facebook.com/nat.lueng/posts/pfbid02YWA9HKrk2BxemqbyE8zziNVjqbJLFB3sfNvPcRYRQHXcVTen4G7wxsksaQj2uBbel">
+            ไปที่โพสต์ต้นทาง
+          </a>
+          <span class="said" id="said" role="status"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="end">
+    <span>ข้อมูลจากคอมเมนต์ในโพสต์ 17 ก.ย. 2569 · ยังไม่ผ่านการตรวจสอบ</span>
+    <span>เส้นขอบจังหวัดจาก apisit/thailand.json</span>
+    <span>ปีเป็น พ.ศ. · งบประมาณเป็นบาท</span>
+  </footer>
+</main>
+
+<script src="provinces.js"></script>
+<script src="buildings.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var ST_KEYS = ['unfinished', 'unused', 'abandoned'];
+  var ST_VAR = { unfinished: '--st-unfinished', abandoned: '--st-abandoned', unused: '--st-unused' };
+  var NO_PROVINCE = 'ไม่ระบุจังหวัด';
+
+  var state = { q: '', status: null, province: 'all', atype: 'all', sort: 'budget', sel: null };
+  var hoverProv = null;
+
+  // ── geometry ─────────────────────────────────────────────────────────────
+  var provs = PROVINCES.map(function (p) {
+    return {
+      n: p.n, e: p.e, g: p.g,
+      rings: p.r.map(function (flat) {
+        var pts = [], x = 0, y = 0;
+        for (var i = 0; i < flat.length; i += 2) {
+          x += flat[i]; y += flat[i + 1];
+          pts.push([x / 1000, y / 1000]);
+        }
+        return pts;
+      })
+    };
+  });
+  var byProv = {};
+  provs.forEach(function (p) { byProv[p.n] = p; });
+
+  var bbox = (function () {
+    var b = [Infinity, Infinity, -Infinity, -Infinity];
+    provs.forEach(function (p) {
+      p.rings.forEach(function (r) {
+        r.forEach(function (pt) {
+          if (pt[0] < b[0]) b[0] = pt[0];
+          if (pt[1] < b[1]) b[1] = pt[1];
+          if (pt[0] > b[2]) b[2] = pt[0];
+          if (pt[1] > b[3]) b[3] = pt[1];
+        });
+      });
+    });
+    return b;
+  })();
+  var LAT_K = Math.cos((bbox[1] + bbox[3]) / 2 * Math.PI / 180);
+
+  // ── data ─────────────────────────────────────────────────────────────────
+  var items = BUILDINGS.map(function (b) {
+    var p = b.province ? byProv[b.province] : null;
+    return Object.assign({}, b, { region: p ? p.g : null });
+  });
+  var unknownProv = items.filter(function (b) { return b.province && !byProv[b.province]; })
+                         .map(function (b) { return b.province; });
+  if (unknownProv.length) console.warn('ชื่อจังหวัดไม่ตรงกับ provinces.js:', unknownProv.join(', '));
+
+  function matches(b, ignore) {
+    if (state.status && ignore !== 'status' && b.status !== state.status) return false;
+    if (state.province !== 'all') {
+      var pv = b.province || NO_PROVINCE;
+      if (pv !== state.province) return false;
+    }
+    if (state.atype !== 'all' && b.type !== state.atype) return false;
+    if (state.q) {
+      var hay = [b.name, b.agency, b.province, b.district, b.note, AGENCY_TYPES[b.type]]
+        .join(' ').toLowerCase();
+      if (hay.indexOf(state.q.toLowerCase()) < 0) return false;
+    }
+    return true;
+  }
+  var SORTS = {
+    budget:   function (a, b) { return (b.budget || -1) - (a.budget || -1); },
+    progress: function (a, b) {
+      var A = a.progress == null ? 999 : a.progress, B = b.progress == null ? 999 : b.progress;
+      return A - B || (b.budget || 0) - (a.budget || 0);
+    },
+    province: function (a, b) {
+      return (a.province || 'ฮฮฮ').localeCompare(b.province || 'ฮฮฮ', 'th') || a.name.localeCompare(b.name, 'th');
+    },
+    name:     function (a, b) { return a.name.localeCompare(b.name, 'th'); }
+  };
+  function shown() { return items.filter(function (b) { return matches(b); }).sort(SORTS[state.sort]); }
+
+  // ── format ───────────────────────────────────────────────────────────────
+  function baht(v) {
+    if (v == null) return null;
+    if (v >= 1e9) return (v / 1e9).toFixed(2).replace(/\.?0+$/, '') + ' พันล้าน';
+    if (v >= 1e6) return (v / 1e6).toFixed(2).replace(/\.?0+$/, '') + ' ล้าน';
+    return v.toLocaleString('th-TH');
+  }
+  function el(tag, cls, txt) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (txt != null) n.textContent = txt;
+    return n;
+  }
+  function cssVar(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  }
+
+  // ── stats ────────────────────────────────────────────────────────────────
+  function renderStats() {
+    var list = shown();
+    var pv = {};
+    list.forEach(function (b) { if (b.province) pv[b.province] = 1; });
+    var sum = list.reduce(function (a, b) { return a + (b.budget || 0); }, 0);
+    var noCoord = list.filter(function (b) { return b.lat == null; }).length;
+    var rows = [
+      ['อาคารในทะเบียน', list.length, 'แห่ง', ''],
+      ['กระจายใน', Object.keys(pv).length, 'จังหวัด', ''],
+      ['งบประมาณรวม', sum ? baht(sum) : '—', sum ? 'บาท' : '', ''],
+      ['ยังไม่มีพิกัด', noCoord, 'แห่ง', 'gap']
+    ];
+    var dl = document.getElementById('stats');
+    dl.textContent = '';
+    rows.forEach(function (r) {
+      var d = el('div', 'stat' + (r[3] ? ' ' + r[3] : ''));
+      d.appendChild(el('dt', null, r[0]));
+      var dd = el('dd', null, String(r[1]));
+      if (r[2]) dd.appendChild(el('small', null, r[2]));
+      d.appendChild(dd);
+      dl.appendChild(d);
+    });
+  }
+
+  // ── filter controls ──────────────────────────────────────────────────────
+  function renderChips() {
+    var box = document.getElementById('stchips');
+    box.textContent = '';
+    var all = el('button', 'chip');
+    all.type = 'button';
+    all.setAttribute('aria-pressed', String(state.status === null));
+    all.textContent = 'ทั้งหมด';
+    all.onclick = function () { state.status = null; state.sel = null; redraw(); };
+    box.appendChild(all);
+
+    ST_KEYS.forEach(function (k) {
+      var n = items.filter(function (b) { return b.status === k && matches(b, 'status'); }).length;
+      var c = el('button', 'chip');
+      c.type = 'button';
+      c.title = STATUS[k].desc;
+      c.setAttribute('aria-pressed', String(state.status === k));
+      var dot = el('span', 'dot');
+      dot.style.background = 'var(' + ST_VAR[k] + ')';
+      c.appendChild(dot);
+      c.appendChild(document.createTextNode(STATUS[k].th));
+      c.appendChild(el('span', 'n', String(n)));
+      c.onclick = function () {
+        state.status = state.status === k ? null : k;
+        state.sel = null;
+        redraw();
+      };
+      box.appendChild(c);
+    });
+  }
+
+  function fillProvinces() {
+    var s = document.getElementById('province');
+    var counts = {};
+    items.forEach(function (b) {
+      var k = b.province || NO_PROVINCE;
+      counts[k] = (counts[k] || 0) + 1;
+    });
+    var keys = Object.keys(counts).filter(function (k) { return k !== NO_PROVINCE; })
+                     .sort(function (a, b) { return a.localeCompare(b, 'th'); });
+    if (counts[NO_PROVINCE]) keys.push(NO_PROVINCE);
+    s.textContent = '';
+    var o0 = el('option', null, 'จังหวัด: ทั้งหมด');
+    o0.value = 'all';
+    s.appendChild(o0);
+    keys.forEach(function (k) {
+      var o = el('option', null, k + ' (' + counts[k] + ')');
+      o.value = k;
+      s.appendChild(o);
+    });
+  }
+
+  function fillTypes() {
+    var s = document.getElementById('atype');
+    s.textContent = '';
+    var o0 = el('option', null, 'ประเภท: ทั้งหมด');
+    o0.value = 'all';
+    s.appendChild(o0);
+    Object.keys(AGENCY_TYPES).forEach(function (k) {
+      var n = items.filter(function (b) { return b.type === k; }).length;
+      if (!n) return;
+      var o = el('option', null, AGENCY_TYPES[k] + ' (' + n + ')');
+      o.value = k;
+      s.appendChild(o);
+    });
+  }
+
+  function renderLegend() {
+    var box = document.getElementById('legend');
+    box.textContent = '';
+    var bub = el('i');
+    var circ = el('span', 'bub', '7');
+    bub.appendChild(circ);
+    bub.appendChild(document.createTextNode('จำนวนรายการในจังหวัด'));
+    box.appendChild(bub);
+    var note = el('i', 'off', 'วงกลมวางที่กลางจังหวัด ไม่ใช่ตำแหน่งอาคาร');
+    box.appendChild(note);
+    var nop = items.filter(function (b) { return !b.province; }).length;
+    if (nop) box.appendChild(el('i', 'off', nop + ' รายการไม่ระบุจังหวัด ดูได้ในไดเรกทอรี'));
+  }
+
+  // ── list ─────────────────────────────────────────────────────────────────
+  function renderList() {
+    var list = shown();
+    var box = document.getElementById('list');
+    box.textContent = '';
+    document.getElementById('listcount').textContent = list.length + ' รายการ';
+    var onMap = list.filter(function (b) { return b.province; }).length;
+    document.getElementById('mapcount').textContent = onMap + ' / ' + list.length + ' อยู่บนแผนที่';
+
+    if (!list.length) {
+      box.appendChild(el('p', 'empty', 'ไม่พบอาคารที่ตรงกับตัวกรองนี้'));
+      return;
+    }
+    list.forEach(function (b) {
+      var row = el('button', 'row');
+      row.type = 'button';
+      row.style.setProperty('--sc', 'var(' + ST_VAR[b.status] + ')');
+      if (state.sel === b.id) row.setAttribute('aria-current', 'true');
+
+      row.appendChild(el('span', 'stripe'));
+
+      var body = el('span', 'body');
+      body.appendChild(el('span', 'nm', b.name));
+      var meta = el('span', 'meta');
+      meta.appendChild(document.createTextNode(b.agency));
+      meta.appendChild(el('span', 'sep', '·'));
+      meta.appendChild(document.createTextNode(
+        b.province ? (b.district ? b.district + ' ' + b.province : b.province) : 'ทั่วประเทศ / ไม่ระบุ'));
+      body.appendChild(meta);
+      row.appendChild(body);
+
+      var aside = el('span', 'aside');
+      aside.appendChild(el('span', 'st', STATUS[b.status].th));
+      if (b.budget) {
+        var bd = el('span', 'bd', baht(b.budget));
+        if (b.budgetApprox) bd.insertBefore(document.createTextNode('~'), bd.firstChild);
+        bd.appendChild(el('u', null, 'บาท'));
+        aside.appendChild(bd);
+      } else {
+        aside.appendChild(el('span', 'bd none', 'ไม่ระบุงบ'));
+      }
+      if (b.progress != null) {
+        var m = el('span', 'meter');
+        var f = el('b');
+        f.style.width = b.progress + '%';
+        m.appendChild(f);
+        m.title = 'คืบหน้า ' + b.progress + '%';
+        aside.appendChild(m);
+      }
+      row.appendChild(aside);
+
+      row.onclick = function () { select(b.id, true); };
+      box.appendChild(row);
+    });
+  }
+
+  // ── detail ───────────────────────────────────────────────────────────────
+  function renderDetail() {
+    var box = document.getElementById('detail');
+    box.textContent = '';
+    var b = items.filter(function (x) { return x.id === state.sel; })[0];
+
+    if (!b) {
+      var hd0 = el('div', 'panel-hd');
+      hd0.appendChild(el('h2', null, 'รายละเอียด'));
+      box.appendChild(hd0);
+      box.appendChild(el('p', 'empty', 'เลือกแถวในไดเรกทอรี หรือคลิกจังหวัดบนแผนที่'));
+      return;
+    }
+
+    var hd = el('div', 'panel-hd');
+    hd.appendChild(el('h2', null, b.name));
+    hd.appendChild(el('span', 'sp'));
+    if (b.revived) hd.appendChild(el('span', 'badge ok', 'กลับมาสร้างต่อแล้ว'));
+    box.appendChild(hd);
+
+    var plate = el('div', 'plate');
+    if (b.photos && b.photos.length) {
+      var img = document.createElement('img');
+      img.src = b.photos[0];
+      img.alt = b.name;
+      img.loading = 'lazy';
+      plate.appendChild(img);
+    } else {
+      plate.appendChild(el('span', null, 'ยังไม่มีรูป'));
+      plate.appendChild(el('small', null, 'ถ้าคุณมีรูปอาคารนี้ ส่งเข้ามาได้'));
+    }
+    box.appendChild(plate);
+
+    var dl = el('dl', 'dl');
+    function add(k, v, cls) {
+      if (v == null || v === '') return;
+      var g = el('div');
+      g.appendChild(el('dt', null, k));
+      g.appendChild(el('dd', cls || null, String(v)));
+      dl.appendChild(g);
+    }
+    add('สถานะ', STATUS[b.status].th + ' — ' + STATUS[b.status].desc);
+    add('หน่วยงาน', b.agency);
+    add('ประเภท', AGENCY_TYPES[b.type]);
+    add('ที่ตั้ง', b.province
+      ? [b.district, b.province].filter(Boolean).join(' ') + (b.region ? ' · ภาค' + REGION_NAMES[b.region] : '')
+      : 'ไม่ระบุจังหวัด / กระจายหลายพื้นที่');
+    if (b.lat != null) add('พิกัด', b.lat.toFixed(5) + ', ' + b.lng.toFixed(5), 'mono');
+    else add('พิกัด', 'ยังไม่มี — ช่วยส่งพิกัดได้', 'want');
+    add('ความคืบหน้า', b.progress != null ? b.progress + '%' : null, 'mono');
+    add('งบประมาณ', b.budget ? (b.budgetApprox ? 'ประมาณ ' : '') + b.budget.toLocaleString('th-TH') + ' บาท' : null, 'mono');
+    add('เริ่มสร้าง', b.yearStart ? 'พ.ศ. ' + b.yearStart : null, 'mono');
+    add('กำหนดแล้วเสร็จ', b.yearDue ? 'พ.ศ. ' + b.yearDue : null, 'mono');
+    add('หยุดงาน / เริ่มไม่ใช้', b.yearStalled ? 'พ.ศ. ' + b.yearStalled : null, 'mono');
+    add('บันทึกจากต้นทาง', b.note);
+    add('ที่มา', b.source);
+    add('สถานะการตรวจสอบ', b.verified ? 'ตรวจสอบแล้ว' : 'ยังไม่ได้ตรวจสอบกับเอกสาร');
+    box.appendChild(dl);
+
+    var acts = el('div', 'acts');
+    var q = [b.name, b.district, b.province].filter(Boolean).join(' ');
+    var gm = el('a', 'btn key', b.lat != null ? 'เปิดใน Google Maps' : 'ค้นชื่อนี้ใน Google Maps');
+    gm.href = b.lat != null
+      ? 'https://www.google.com/maps/search/?api=1&query=' + b.lat + ',' + b.lng
+      : 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q);
+    gm.target = '_blank';
+    gm.rel = 'noopener';
+    acts.appendChild(gm);
+
+    var cp = el('button', 'btn', 'คัดลอกชื่อรายการ');
+    cp.type = 'button';
+    cp.onclick = function () { copy(b.id + ' ' + q, cp, 'คัดลอกชื่อรายการ'); };
+    acts.appendChild(cp);
+
+    if (b.sourceUrl) {
+      var src = el('a', 'btn', 'ดูแหล่งข้อมูล');
+      src.href = b.sourceUrl;
+      src.target = '_blank';
+      src.rel = 'noopener';
+      acts.appendChild(src);
+    }
+    box.appendChild(acts);
+  }
+
+  function copy(text, btn, label) {
+    var done = function (ok) {
+      btn.textContent = ok ? 'คัดลอกแล้ว' : 'คัดลอกไม่ได้';
+      setTimeout(function () { btn.textContent = label; }, 1800);
+    };
+    try {
+      navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(false); });
+    } catch (e) { done(false); }
+  }
+
+  function select(id, scroll) {
+    state.sel = state.sel === id ? null : id;
+    renderList();
+    renderDetail();
+    drawMap();
+    if (scroll && state.sel && window.matchMedia('(max-width: 900px)').matches) {
+      document.getElementById('detail').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  // ── map ──────────────────────────────────────────────────────────────────
+  var cv = document.getElementById('map');
+  var ctx = cv.getContext('2d');
+  var tipEl = document.getElementById('tip');
+  var view = { w: 0, h: 0, s: 1, ox: 0, oy: 0 };
+  var bubbles = [];
+
+  function layout() {
+    var wrap = document.getElementById('mapbox');
+    var w = Math.max(240, wrap.clientWidth);
+    var gw = (bbox[2] - bbox[0]) * LAT_K, gh = bbox[3] - bbox[1];
+    var pad = 16;
+    var h = Math.min(780, Math.max(360, (w - pad * 2) * (gh / gw) + pad * 2));
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    cv.width = Math.round(w * dpr);
+    cv.height = Math.round(h * dpr);
+    cv.style.height = h + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    var s = Math.min((w - pad * 2) / gw, (h - pad * 2) / gh);
+    view = {
+      w: w, h: h, s: s,
+      ox: (w - gw * s) / 2 - bbox[0] * LAT_K * s,
+      oy: (h - gh * s) / 2 + bbox[3] * s
+    };
+  }
+  function px(lng) { return lng * LAT_K * view.s + view.ox; }
+  function py(lat) { return view.oy - lat * view.s; }
+
+  function drawMap() {
+    var list = shown();
+    var counts = {};
+    list.forEach(function (b) { if (b.province) counts[b.province] = (counts[b.province] || 0) + 1; });
+    var maxC = Math.max.apply(null, [1].concat(Object.keys(counts).map(function (k) { return counts[k]; })));
+
+    var C = {
+      void: cssVar('--map-void'), land: cssVar('--map-land'),
+      line: cssVar('--line'), ink: cssVar('--ink'), ground: cssVar('--ground'),
+      accent: cssVar('--accent'),
+      st: {
+        unfinished: cssVar('--st-unfinished'),
+        abandoned: cssVar('--st-abandoned'),
+        unused: cssVar('--st-unused')
+      }
+    };
+    var hue = state.status ? C.st[state.status] : C.accent;
+    var selProv = state.sel
+      ? (items.filter(function (x) { return x.id === state.sel; })[0] || {}).province
+      : null;
+
+    ctx.clearRect(0, 0, view.w, view.h);
+    ctx.fillStyle = C.void;
+    ctx.fillRect(0, 0, view.w, view.h);
+
+    provs.forEach(function (p) {
+      var c = counts[p.n] || 0;
+      ctx.beginPath();
+      p.rings.forEach(function (r) {
+        r.forEach(function (pt, i) {
+          var X = px(pt[0]), Y = py(pt[1]);
+          if (i === 0) ctx.moveTo(X, Y); else ctx.lineTo(X, Y);
+        });
+        ctx.closePath();
+      });
+      if (c) {
+        ctx.globalAlpha = 0.1 + 0.26 * (c / maxC);
+        ctx.fillStyle = hue;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      } else {
+        ctx.fillStyle = C.land;
+        ctx.fill();
+      }
+      ctx.lineWidth = 0.6;
+      ctx.strokeStyle = C.line;
+      ctx.stroke();
+      if (hoverProv === p.n || selProv === p.n) {
+        ctx.lineWidth = 1.5;
+        ctx.strokeStyle = C.ink;
+        ctx.stroke();
+      }
+    });
+
+    // one bubble per province, area ∝ จำนวนรายการ
+    bubbles = [];
+    Object.keys(counts).forEach(function (name) {
+      var a = PROVINCE_ANCHOR[name];
+      if (!a) return;
+      var n = counts[name];
+      var X = px(a[1]), Y = py(a[0]);
+      bubbles.push({ name: name, x: X, y: Y, ax: X, ay: Y, r: 7.5 + 5.2 * Math.sqrt(n - 1), n: n });
+    });
+    // จังหวัดรอบกรุงเทพฯ อยู่ชิดกันจนวงทับกัน ดันออกจากกันแล้วลากเส้นกลับไปจุดจริง
+    bubbles.sort(function (a, b) { return b.n - a.n; });
+    for (var pass = 0; pass < 24; pass++) {
+      var moved = false;
+      for (var i = 0; i < bubbles.length; i++) {
+        for (var k = i + 1; k < bubbles.length; k++) {
+          var A = bubbles[i], B = bubbles[k];
+          var dx = B.x - A.x, dy = B.y - A.y;
+          var d = Math.hypot(dx, dy) || 0.01;
+          var need = A.r + B.r + 2.5;
+          if (d >= need) continue;
+          var push = (need - d) / 2;
+          var ux = dx / d, uy = dy / d;
+          // วงใหญ่ขยับน้อยกว่า เพื่อให้จังหวัดที่มีรายการเยอะอยู่ใกล้ที่เดิม
+          var wA = B.r / (A.r + B.r), wB = A.r / (A.r + B.r);
+          A.x -= ux * push * 2 * wA; A.y -= uy * push * 2 * wA;
+          B.x += ux * push * 2 * wB; B.y += uy * push * 2 * wB;
+          moved = true;
+        }
+      }
+      if (!moved) break;
+    }
+    bubbles.forEach(function (z) {
+      z.x = Math.min(Math.max(z.x, z.r + 2), view.w - z.r - 2);
+      z.y = Math.min(Math.max(z.y, z.r + 2), view.h - z.r - 2);
+      if (Math.hypot(z.x - z.ax, z.y - z.ay) > 3) {
+        ctx.beginPath();
+        ctx.moveTo(z.ax, z.ay);
+        ctx.lineTo(z.x, z.y);
+        ctx.lineWidth = 0.8;
+        ctx.strokeStyle = hue;
+        ctx.globalAlpha = 0.5;
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+        ctx.beginPath();
+        ctx.arc(z.ax, z.ay, 1.6, 0, Math.PI * 2);
+        ctx.fillStyle = hue;
+        ctx.fill();
+      }
+    });
+    bubbles.forEach(function (z) {
+      var name = z.name, n = z.n, X = z.x, Y = z.y, r = z.r;
+
+      ctx.beginPath();
+      ctx.arc(X, Y, r, 0, Math.PI * 2);
+      ctx.globalAlpha = 0.9;
+      ctx.fillStyle = C.void;
+      ctx.fill();
+      ctx.globalAlpha = 0.26;
+      ctx.fillStyle = hue;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+      ctx.lineWidth = selProv === name ? 2.2 : (hoverProv === name ? 1.9 : 1.3);
+      ctx.strokeStyle = hue;
+      ctx.stroke();
+
+      if (n > 1) {
+        ctx.font = '500 ' + (n > 9 ? 11 : 11.5) + 'px ' + (cssVar('--mono') || 'monospace');
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = C.ink;
+        ctx.fillText(String(n), X, Y + 0.5);
+        ctx.textAlign = 'start';
+        ctx.textBaseline = 'alphabetic';
+      }
+    });
+
+    // exact pins, for entries that eventually get real coordinates
+    list.forEach(function (b) {
+      if (b.lat == null) return;
+      var X = px(b.lng), Y = py(b.lat), col = C.st[b.status];
+      ctx.strokeStyle = col;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(X - 8, Y); ctx.lineTo(X + 8, Y);
+      ctx.moveTo(X, Y - 8); ctx.lineTo(X, Y + 8);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(X, Y, state.sel === b.id ? 5 : 4, 0, Math.PI * 2);
+      ctx.fillStyle = col;
+      ctx.fill();
+      ctx.lineWidth = 1.4;
+      ctx.strokeStyle = C.void;
+      ctx.stroke();
+    });
+
+    // label the province of the selected building
+    if (selProv) {
+      var bb = bubbles.filter(function (z) { return z.name === selProv; })[0];
+      if (bb) {
+        ctx.font = '500 11px ' + (cssVar('--mono') || 'monospace');
+        var tw = ctx.measureText(selProv).width;
+        var lx = Math.min(Math.max(bb.x - tw / 2 - 5, 4), view.w - tw - 14);
+        var ly = bb.y + bb.r + 7;
+        if (ly > view.h - 20) ly = bb.y - bb.r - 24;
+        ctx.fillStyle = C.ink;
+        ctx.fillRect(lx, ly, tw + 10, 17);
+        ctx.fillStyle = C.ground;
+        ctx.fillText(selProv, lx + 5, ly + 12);
+      }
+    }
+  }
+
+  function pointInRings(rings, lng, lat) {
+    var inside = false;
+    for (var k = 0; k < rings.length; k++) {
+      var r = rings[k];
+      for (var i = 0, j = r.length - 1; i < r.length; j = i++) {
+        var xi = r[i][0], yi = r[i][1], xj = r[j][0], yj = r[j][1];
+        if (((yi > lat) !== (yj > lat)) && (lng < (xj - xi) * (lat - yi) / (yj - yi) + xi)) inside = !inside;
+      }
+    }
+    return inside;
+  }
+
+  function hitTest(mx, my) {
+    var best = null, bd = Infinity;
+    bubbles.forEach(function (z) {
+      var d = Math.hypot(z.x - mx, z.y - my);
+      if (d <= z.r + 2 && d < bd) { bd = d; best = z; }
+    });
+    if (best) return { bubble: best };
+    var lng = (mx - view.ox) / (view.s * LAT_K), lat = (view.oy - my) / view.s;
+    for (var i = 0; i < provs.length; i++) {
+      if (pointInRings(provs[i].rings, lng, lat)) return { prov: provs[i] };
+    }
+    return {};
+  }
+
+  function onMove(ev) {
+    var r = cv.getBoundingClientRect();
+    var mx = ev.clientX - r.left, my = ev.clientY - r.top;
+    var hit = hitTest(mx, my);
+    var np = hit.bubble ? hit.bubble.name : (hit.prov ? hit.prov.n : null);
+    cv.style.cursor = hit.bubble ? 'pointer' : 'default';
+
+    if (hit.bubble) {
+      showTip(hit.bubble.x, hit.bubble.y - hit.bubble.r + 6, hit.bubble.name,
+              hit.bubble.n + ' รายการ · คลิกเพื่อกรอง');
+    } else if (hit.prov) {
+      var c = shown().filter(function (b) { return b.province === hit.prov.n; }).length;
+      showTip(mx, my, hit.prov.n, c ? c + ' รายการ' : 'ยังไม่มีข้อมูล');
+    } else {
+      tipEl.hidden = true;
+    }
+    if (np !== hoverProv) { hoverProv = np; drawMap(); }
+  }
+  function showTip(x, y, title, sub) {
+    tipEl.textContent = '';
+    tipEl.appendChild(document.createTextNode(title));
+    if (sub) {
+      tipEl.appendChild(document.createElement('br'));
+      tipEl.appendChild(el('span', 'num', sub));
+    }
+    tipEl.style.left = x + 'px';
+    tipEl.style.top = y + 'px';
+    tipEl.hidden = false;
+  }
+  cv.addEventListener('mousemove', onMove);
+  cv.addEventListener('mouseleave', function () {
+    tipEl.hidden = true;
+    if (hoverProv) { hoverProv = null; drawMap(); }
+  });
+  cv.addEventListener('click', function (ev) {
+    var r = cv.getBoundingClientRect();
+    var hit = hitTest(ev.clientX - r.left, ev.clientY - r.top);
+    var name = hit.bubble ? hit.bubble.name : null;
+    if (!name) return;
+    state.province = state.province === name ? 'all' : name;
+    document.getElementById('province').value = state.province;
+    state.sel = null;
+    redraw();
+  });
+
+  // ── template ─────────────────────────────────────────────────────────────
+  document.getElementById('tpl').value = [
+    'ชื่ออาคาร/โครงการ : ',
+    'หน่วยงานเจ้าของ   : ',
+    'จังหวัด / อำเภอ    : ',
+    'พิกัด (lat, lng)   : ',
+    'สถานะ             : ' + ST_KEYS.map(function (k) { return STATUS[k].th; }).join(' / '),
+    'สภาพที่เห็นวันนี้   : ',
+    'งบประมาณ (บาท)     : ',
+    'ปีเริ่ม / ปีที่หยุด  : ',
+    'ที่มาอ้างอิง       : ',
+    'รูปถ่าย            : แนบมาในคอมเมนต์'
+  ].join('\n');
+
+  document.getElementById('copytpl').onclick = function () {
+    copy(document.getElementById('tpl').value, this, 'คัดลอกเทมเพลต');
+    document.getElementById('said').textContent = 'วางลงในคอมเมนต์ใต้โพสต์ได้เลย';
+  };
+
+  // ── theme ────────────────────────────────────────────────────────────────
+  var btn = document.getElementById('theme');
+  function isDark() {
+    var t = document.documentElement.getAttribute('data-theme');
+    if (t) return t === 'dark';
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+  function syncTheme() { btn.textContent = isDark() ? 'โหมดสว่าง' : 'โหมดมืด'; }
+  btn.onclick = function () {
+    var next = isDark() ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('ymsTheme', next); } catch (e) {}
+    syncTheme();
+    drawMap();
+  };
+  try {
+    var saved = localStorage.getItem('ymsTheme');
+    if (saved === 'dark' || saved === 'light') document.documentElement.setAttribute('data-theme', saved);
+  } catch (e) {}
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
+    syncTheme(); drawMap();
+  });
+
+  // ── wire up ──────────────────────────────────────────────────────────────
+  function redraw() {
+    renderChips();
+    renderStats();
+    renderList();
+    renderDetail();
+    drawMap();
+  }
+
+  document.getElementById('q').addEventListener('input', function () {
+    state.q = this.value.trim(); state.sel = null; redraw();
+  });
+  document.getElementById('province').addEventListener('change', function () {
+    state.province = this.value; state.sel = null; redraw();
+  });
+  document.getElementById('atype').addEventListener('change', function () {
+    state.atype = this.value; state.sel = null; redraw();
+  });
+  document.getElementById('sort').addEventListener('change', function () {
+    state.sort = this.value; redraw();
+  });
+
+  fillProvinces();
+  fillTypes();
+  renderLegend();
+  syncTheme();
+  layout();
+  redraw();
+
+  var ro = new ResizeObserver(function () { layout(); drawMap(); });
+  ro.observe(document.getElementById('mapbox'));
+  if (document.fonts) document.fonts.ready.then(drawMap);
+})();
+
+</script>
