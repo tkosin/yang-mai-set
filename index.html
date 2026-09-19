@@ -332,8 +332,14 @@ textarea.tpl {
 .give-foot { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; }
 .give-foot .said { font-size: 12px; color: var(--ink-3); }
 
-footer.end {
-  border-top: 1px solid var(--line); padding-block: 18px 30px;
+footer.end { border-top: 1px solid var(--line); padding-block: 18px 34px; }
+.disclaim {
+  margin: 0; max-width: 78ch;
+  font-size: 13.5px; line-height: 1.7; color: var(--ink-2);
+}
+.disclaim strong { color: var(--ink); font-weight: 500; }
+.end .meta {
+  margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line-2);
   font-size: 12.5px; color: var(--ink-3);
   display: flex; flex-wrap: wrap; gap: 4px 16px;
 }
@@ -483,10 +489,19 @@ footer.end {
   </section>
 
   <footer class="end">
-    <span>ตั้งต้นจากโพสต์ของ Nat Luengnaruemitchai 17 ก.ย. 2569 · ปรับปรุง 19 ก.ย. 2569</span>
-    <span>ยังไม่ผ่านการตรวจสอบกับเอกสารราชการ</span>
-    <span>เส้นขอบจังหวัดจาก apisit/thailand.json</span>
-    <span>ปีเป็น พ.ศ. · งบประมาณเป็นบาท</span>
+    <p class="disclaim">
+      ข้อมูลในหน้านี้รวบรวมจากการบอกต่อ ยังไม่ได้ตรวจสอบกับเอกสารราชการ
+      <strong>รายละเอียด สถานะ และตัวเลขงบประมาณอาจเปลี่ยนแปลงไปตามสถานการณ์</strong>
+      บางโครงการอาจกลับมาก่อสร้างจนแล้วเสร็จ เปลี่ยนการใช้งาน หรือถูกรื้อถอนไปแล้ว
+      ก่อนนำไปใช้อ้างอิงต่อ โปรดตรวจสอบกับหน่วยงานภาครัฐที่เกี่ยวข้องโดยตรง
+      หากพบข้อมูลคลาดเคลื่อน แจ้งกลับมาได้ที่<a target="_blank" rel="noopener"
+      href="https://www.facebook.com/nat.lueng/posts/pfbid02YWA9HKrk2BxemqbyE8zziNVjqbJLFB3sfNvPcRYRQHXcVTen4G7wxsksaQj2uBbel">โพสต์ต้นทาง</a>
+    </p>
+    <div class="meta">
+      <span>ตั้งต้นจากโพสต์ของ Nat Luengnaruemitchai 17 ก.ย. 2569 · ปรับปรุง 19 ก.ย. 2569</span>
+      <span>เส้นขอบจังหวัดจาก apisit/thailand.json</span>
+      <span>ปีเป็น พ.ศ. · งบประมาณเป็นบาท</span>
+    </div>
   </footer>
 </main>
 
