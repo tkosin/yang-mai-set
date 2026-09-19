@@ -1,4 +1,26 @@
-<title>ยังไม่เสร็จ</title>
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ยังไม่เสร็จ — ทะเบียนอาคารและโครงการรัฐที่ไม่ได้ใช้งาน</title>
+<meta name="description" content="ทะเบียนอาคารและโครงการของหน่วยงานรัฐไทยที่สร้างไม่เสร็จ สร้างเสร็จแล้วไม่ได้เปิดใช้ หรือถูกทิ้งร้าง 64 รายการใน 31 จังหวัด รวมงบที่ระบุตัวเลขกว่า 24,600 ล้านบาท เปิดให้ส่งรูปและพิกัดมาเติม">
+<link rel="canonical" href="https://tkosin.github.io/yang-mai-set/">
+<meta name="theme-color" content="#DEDFD8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#141712" media="(prefers-color-scheme: dark)">
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="th_TH">
+<meta property="og:site_name" content="ยังไม่เสร็จ">
+<meta property="og:url" content="https://tkosin.github.io/yang-mai-set/">
+<meta property="og:title" content="ยังไม่เสร็จ — ทะเบียนอาคารและโครงการรัฐที่ไม่ได้ใช้งาน">
+<meta property="og:description" content="64 โครงการใน 31 จังหวัด สร้างไม่เสร็จ 32 · สร้างเสร็จแต่ไม่ได้ใช้ 22 · ทิ้งร้าง 10 รวมงบที่ระบุตัวเลขกว่า 24,600 ล้านบาท">
+<meta property="og:image" content="https://tkosin.github.io/yang-mai-set/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="แผนที่ประเทศไทยแสดงจำนวนอาคารรัฐที่ไม่ได้ใช้งานรายจังหวัด">
+<meta name="twitter:card" content="summary_large_image">
+
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 
@@ -72,6 +94,8 @@
 
 /* ── base ────────────────────────────────────────────────────────────────── */
 * { box-sizing: border-box; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
 body {
   background: var(--ground);
   color: var(--ink);
@@ -135,7 +159,10 @@ header.top {
 .hero { padding-block: 28px 20px; }
 .hero h1 { font-size: clamp(27px, 5.2vw, 42px); line-height: 1.16; letter-spacing: -.015em; max-width: 25ch; }
 .hero .lede { margin: 12px 0 0; max-width: 62ch; color: var(--ink-2); font-size: 15.5px; }
-.hero .lede em { color: var(--ink); font-style: normal; }
+.hero h1 .amt { white-space: nowrap; }
+.hero .lede em { color: var(--ink); font-style: normal; font-weight: 500; white-space: nowrap; }
+.hero .lede b { color: var(--ink-3); font-weight: 400; margin-inline: 7px; }
+.hero .lede.src { margin-top: 6px; font-size: 14px; color: var(--ink-3); }
 
 /* ── stats ───────────────────────────────────────────────────────────────── */
 .stats { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--ink-3); margin-top: 22px; }
@@ -330,12 +357,14 @@ footer.end {
   * { animation-duration: .001ms !important; transition-duration: .001ms !important; }
 }
 </style>
+</head>
 
+<body>
 <header class="top">
   <div class="wrap top-in">
     <span class="mark">
       <b>ยังไม่เสร็จ</b>
-      <span>ทะเบียนตึกร้างของหน่วยงานรัฐ</span>
+      <span>ทะเบียนอาคารและโครงการรัฐที่ไม่ได้ใช้งาน</span>
     </span>
     <span class="top-sp"></span>
     <button class="ghost" id="theme" type="button">โหมดมืด</button>
@@ -345,12 +374,14 @@ footer.end {
 <main class="wrap">
 
   <section class="hero">
-    <p class="eyebrow">รายการเที่ยวตึกร้างทั่วไทย</p>
-    <h1>ตึกที่รัฐเริ่มสร้าง แล้วไม่มีใครสร้างต่อ</h1>
+    <p class="eyebrow" id="eyebrow">อาคารและโครงการรัฐ 64 แห่ง · 31 จังหวัด</p>
+    <h1>งบอย่างน้อย <span class="amt"><span id="h1sum">24,648</span> ล้านบาท</span> ในโครงการรัฐที่ไม่ได้ใช้</h1>
     <p class="lede">
-      รวมอาคารและโครงสร้างพื้นฐานของส่วนราชการ องค์กรอิสระ ท้องถิ่น และสถานศึกษา
-      ที่<em>สร้างไม่เสร็จ</em> <em>สร้างเสร็จแต่ไม่เคยเปิดใช้</em> หรือ<em>ถูกทิ้งร้าง</em>
-      — ตั้งต้นจากรายการที่คนช่วยกันรวบรวมไว้ในคอมเมนต์ แล้วเปิดให้เติมรูปกับพิกัดต่อ
+      ของส่วนราชการ องค์กรอิสระ ท้องถิ่น สถานศึกษา และโรงพยาบาล —
+      <em id="ledeA">สร้างไม่เสร็จ 32</em><b>·</b><em id="ledeB">สร้างเสร็จแต่ไม่ได้เปิดใช้ 22</em><b>·</b><em id="ledeC">ถูกทิ้งร้าง 10</em>
+    </p>
+    <p class="lede src">
+      รวบรวมจากคอมเมนต์ในโพสต์ที่ชวนกันทำ “รายการเที่ยวตึกร้างทั่วไทย” แล้วเปิดให้เติมรูปกับพิกัดต่อ
     </p>
 
     <div class="notice">
@@ -452,7 +483,8 @@ footer.end {
   </section>
 
   <footer class="end">
-    <span>ข้อมูลจากคอมเมนต์ในโพสต์ 17 ก.ย. 2569 · ปรับปรุง 19 ก.ย. 2569 · ยังไม่ผ่านการตรวจสอบ</span>
+    <span>ตั้งต้นจากโพสต์ของ Nat Luengnaruemitchai 17 ก.ย. 2569 · ปรับปรุง 19 ก.ย. 2569</span>
+    <span>ยังไม่ผ่านการตรวจสอบกับเอกสารราชการ</span>
     <span>เส้นขอบจังหวัดจาก apisit/thailand.json</span>
     <span>ปีเป็น พ.ศ. · งบประมาณเป็นบาท</span>
   </footer>
@@ -558,17 +590,36 @@ footer.end {
     return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
   }
 
+  // ── headline ─────────────────────────────────────────────────────────────
+  // บรรยายชุดข้อมูลทั้งหมด ไม่ขึ้นกับตัวกรอง จึงเรียกครั้งเดียวตอนเริ่ม
+  function renderHeadline() {
+    var withBudget = items.filter(function (b) { return b.budget; });
+    var sum = withBudget.reduce(function (a, b) { return a + b.budget; }, 0);
+    var pv = {};
+    items.forEach(function (b) { if (b.province) pv[b.province] = 1; });
+    var n = function (k) { return items.filter(function (b) { return b.status === k; }).length; };
+
+    document.getElementById('eyebrow').textContent =
+      'อาคารและโครงการรัฐ ' + items.length + ' แห่ง · ' + Object.keys(pv).length + ' จังหวัด';
+    document.getElementById('h1sum').textContent =
+      Math.round(sum / 1e6).toLocaleString('th-TH');
+    document.getElementById('ledeA').textContent = 'สร้างไม่เสร็จ ' + n('unfinished');
+    document.getElementById('ledeB').textContent = 'สร้างเสร็จแต่ไม่ได้เปิดใช้ ' + n('unused');
+    document.getElementById('ledeC').textContent = 'ถูกทิ้งร้าง ' + n('abandoned');
+  }
+
   // ── stats ────────────────────────────────────────────────────────────────
   function renderStats() {
     var list = shown();
     var pv = {};
     list.forEach(function (b) { if (b.province) pv[b.province] = 1; });
-    var sum = list.reduce(function (a, b) { return a + (b.budget || 0); }, 0);
+    var withBudget = list.filter(function (b) { return b.budget; });
+    var sum = withBudget.reduce(function (a, b) { return a + b.budget; }, 0);
     var noCoord = list.filter(function (b) { return b.lat == null; }).length;
     var rows = [
-      ['อาคารในทะเบียน', list.length, 'แห่ง', ''],
+      ['ในทะเบียน', list.length, 'แห่ง', ''],
       ['กระจายใน', Object.keys(pv).length, 'จังหวัด', ''],
-      ['งบประมาณรวม', sum ? baht(sum) : '—', sum ? 'บาท' : '', ''],
+      ['งบที่ระบุ (' + withBudget.length + ' รายการ)', sum ? baht(sum) : '—', sum ? 'บาท' : '', ''],
       ['ยังไม่มีพิกัด', noCoord, 'แห่ง', 'gap']
     ];
     var dl = document.getElementById('stats');
@@ -1181,6 +1232,7 @@ footer.end {
     state.sort = this.value; redraw();
   });
 
+  renderHeadline();
   fillProvinces();
   fillTypes();
   renderLegend();
@@ -1195,3 +1247,6 @@ footer.end {
 })();
 
 </script>
+
+</body>
+</html>

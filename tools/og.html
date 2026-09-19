@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>og card</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+  /* การ์ดสำหรับสร้าง og.png — ถ่ายด้วย headless Chrome ที่ 1200x630
+     ดูวิธีสร้างใหม่ได้ใน README หัวข้อ "ภาพ preview สำหรับแชร์" */
+  :root {
+    --ground: #DEDFD8; --slab: #F3F3EE; --ink: #1B1F1B; --ink-2: #575D56;
+    --ink-3: #868C84; --line: #C4C6BB; --accent: #B82A62;
+    --map-land: #E9EAE2; --map-void: #D6D8CF;
+    --unfinished: #BF5518; --unused: #3D6483; --abandoned: #6A7068;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; width: 1200px; height: 630px; overflow: hidden;
+    background: var(--ground); color: var(--ink);
+    font: 400 16px/1.6 'IBM Plex Sans Thai', system-ui, sans-serif;
+    display: grid; grid-template-columns: 1fr 430px;
+  }
+  .L { padding: 52px 0 46px 60px; display: flex; flex-direction: column; }
+  .wm {
+    font: 700 30px/1 'Chakra Petch', sans-serif; letter-spacing: -.01em;
+    position: relative; align-self: flex-start;
+  }
+  .wm::after {
+    content: ''; position: absolute; left: 0; right: 42%; bottom: -7px;
+    height: 3px; background: var(--accent);
+  }
+  h1 {
+    font: 600 50px/1.18 'Chakra Petch', sans-serif; letter-spacing: -.02em;
+    margin: 42px 0 0; max-width: 15ch;
+  }
+  h1 b { font-weight: 700; color: var(--accent); white-space: nowrap; }
+  .rows { margin-top: auto; display: flex; gap: 26px; }
+  .rows div { display: flex; flex-direction: column; gap: 5px; }
+  .rows i {
+    font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .08em;
+    font-style: normal; color: var(--ink-3);
+  }
+  .rows span { font: 600 15px/1.2 'IBM Plex Sans Thai', sans-serif; display: flex; align-items: center; gap: 7px; }
+  .rows u { width: 9px; height: 9px; border-radius: 50%; text-decoration: none; }
+  .url {
+    margin-top: 26px; font: 500 15px/1 'IBM Plex Mono', monospace;
+    color: var(--ink-2); letter-spacing: .01em;
+  }
+  .R { background: var(--map-void); position: relative; }
+  canvas { display: block; }
+</style>
+</head>
+<body>
+  <div class="L">
+    <div class="wm">ยังไม่เสร็จ</div>
+    <h1>งบอย่างน้อย <b><span id="sum">–</span> ล้านบาท</b> ในโครงการรัฐที่ไม่ได้ใช้</h1>
+    <div class="rows" id="rows"></div>
+    <div class="url">tkosin.github.io/yang-mai-set</div>
+  </div>
+  <div class="R"><canvas id="c" width="430" height="630"></canvas></div>
+
+<script src="../provinces.js"></script>
+<script src="../buildings.js"></script>
+<script>
+(function () {
+  var withBudget = BUILDINGS.filter(function (b) { return b.budget; });
+  var sum = withBudget.reduce(function (a, b) { return a + b.budget; }, 0);
+  document.getElementById('sum').textContent = Math.round(sum / 1e6).toLocaleString('th-TH');
+
+  var pv = {};
+  BUILDINGS.forEach(function (b) { if (b.province) pv[b.province] = 1; });
+  var n = function (k) { return BUILDINGS.filter(function (b) { return b.status === k; }).length; };
+  var rows = [
+    ['ทั้งหมด', BUILDINGS.length + ' แห่ง · ' + Object.keys(pv).length + ' จังหวัด', null],
+    ['สร้างไม่เสร็จ', String(n('unfinished')), 'var(--unfinished)'],
+    ['เสร็จแต่ไม่ใช้', String(n('unused')), 'var(--unused)'],
+    ['ทิ้งร้าง', String(n('abandoned')), 'var(--abandoned)']
+  ];
+  var box = document.getElementById('rows');
+  rows.forEach(function (r) {
+    var d = document.createElement('div');
+    var i = document.createElement('i'); i.textContent = r[0];
+    var s = document.createElement('span');
+    if (r[2]) { var u = document.createElement('u'); u.style.background = r[2]; s.appendChild(u); }
+    s.appendChild(document.createTextNode(r[1]));
+    d.appendChild(i); d.appendChild(s); box.appendChild(d);
+  });
+
+  // แผนที่แบบเดียวกับหน้าเว็บ ย่อเหลือเฉพาะส่วนที่ภาพนิ่งต้องใช้
+  var cv = document.getElementById('c'), ctx = cv.getContext('2d');
+  var W = cv.width, H = cv.height, DPR = 2;
+  cv.width = W * DPR; cv.height = H * DPR;
+  cv.style.width = W + 'px'; cv.style.height = H + 'px';
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+
+  var provs = PROVINCES.map(function (p) {
+    return { n: p.n, rings: p.r.map(function (f) {
+      var pts = [], x = 0, y = 0;
+      for (var i = 0; i < f.length; i += 2) { x += f[i]; y += f[i + 1]; pts.push([x / 1000, y / 1000]); }
+      return pts;
+    }) };
+  });
+  var bb = [Infinity, Infinity, -Infinity, -Infinity];
+  provs.forEach(function (p) { p.rings.forEach(function (r) { r.forEach(function (q) {
+    bb[0] = Math.min(bb[0], q[0]); bb[1] = Math.min(bb[1], q[1]);
+    bb[2] = Math.max(bb[2], q[0]); bb[3] = Math.max(bb[3], q[1]);
+  }); }); });
+  var K = Math.cos((bb[1] + bb[3]) / 2 * Math.PI / 180);
+  var gw = (bb[2] - bb[0]) * K, gh = bb[3] - bb[1], pad = 26;
+  var sc = Math.min((W - pad * 2) / gw, (H - pad * 2) / gh);
+  var ox = (W - gw * sc) / 2 - bb[0] * K * sc, oy = (H - gh * sc) / 2 + bb[3] * sc;
+  var px = function (lng) { return lng * K * sc + ox; };
+  var py = function (lat) { return oy - lat * sc; };
+
+  var css = function (v) { return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); };
+  var counts = {};
+  BUILDINGS.forEach(function (b) { if (b.province) counts[b.province] = (counts[b.province] || 0) + 1; });
+  var maxC = Math.max.apply(null, Object.keys(counts).map(function (k) { return counts[k]; }));
+
+  ctx.fillStyle = css('--map-void'); ctx.fillRect(0, 0, W, H);
+  provs.forEach(function (p) {
+    ctx.beginPath();
+    p.rings.forEach(function (r) {
+      r.forEach(function (q, i) { var X = px(q[0]), Y = py(q[1]); i ? ctx.lineTo(X, Y) : ctx.moveTo(X, Y); });
+      ctx.closePath();
+    });
+    var c = counts[p.n] || 0;
+    if (c) { ctx.globalAlpha = 0.1 + 0.3 * (c / maxC); ctx.fillStyle = css('--accent'); ctx.fill(); ctx.globalAlpha = 1; }
+    else { ctx.fillStyle = css('--map-land'); ctx.fill(); }
+    ctx.lineWidth = 0.6; ctx.strokeStyle = css('--line'); ctx.stroke();
+  });
+
+  var bubbles = Object.keys(counts).map(function (name) {
+    var a = PROVINCE_ANCHOR[name];
+    return { x: px(a[1]), y: py(a[0]), r: 8 + 5.4 * Math.sqrt(counts[name] - 1), n: counts[name] };
+  }).sort(function (a, b) { return b.n - a.n; });
+  for (var pass = 0; pass < 24; pass++) {
+    for (var i = 0; i < bubbles.length; i++) for (var k = i + 1; k < bubbles.length; k++) {
+      var A = bubbles[i], B = bubbles[k];
+      var dx = B.x - A.x, dy = B.y - A.y, d = Math.hypot(dx, dy) || 0.01, need = A.r + B.r + 2.5;
+      if (d >= need) continue;
+      var push = (need - d) / 2, ux = dx / d, uy = dy / d;
+      var wA = B.r / (A.r + B.r), wB = A.r / (A.r + B.r);
+      A.x -= ux * push * 2 * wA; A.y -= uy * push * 2 * wA;
+      B.x += ux * push * 2 * wB; B.y += uy * push * 2 * wB;
+    }
+  }
+  bubbles.forEach(function (z) {
+    ctx.beginPath(); ctx.arc(z.x, z.y, z.r, 0, Math.PI * 2);
+    ctx.globalAlpha = 0.9; ctx.fillStyle = css('--map-void'); ctx.fill();
+    ctx.globalAlpha = 0.28; ctx.fillStyle = css('--accent'); ctx.fill();
+    ctx.globalAlpha = 1; ctx.lineWidth = 1.4; ctx.strokeStyle = css('--accent'); ctx.stroke();
+    if (z.n > 1) {
+      ctx.font = "500 12px 'IBM Plex Mono', monospace";
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillStyle = css('--ink'); ctx.fillText(String(z.n), z.x, z.y + 0.5);
+    }
+  });
+  document.documentElement.dataset.ready = '1';
+})();
+</script>
+</body>
+</html>

@@ -41,6 +41,8 @@ Korat Living Library, ศูนย์ดาราศาสตร์โครา�
 | `index.html` | ทั้งหน้า — CSS, JS, แผนที่ Canvas, ไดเรกทอรี, เทมเพลตส่งข้อมูล |
 | `buildings.js` | **ข้อมูลอาคาร** + จุดอ้างอิงจังหวัด + ตารางสถานะ/ประเภท — แก้ที่นี่ที่เดียว |
 | `provinces.js` | เส้นขอบ 77 จังหวัด delta-encoded ไม่ต้องแก้ |
+| `og.png` | ภาพ preview ตอนแชร์ลิงก์ (1200×630) |
+| `tools/og.html` | การ์ดที่ใช้สร้าง `og.png` |
 
 ## เติมพิกัดให้รายการที่มีอยู่
 
@@ -100,3 +102,27 @@ git add -A && git commit -m "เพิ่มพิกัด รพ.ตรัง"
 ```
 
 `.nojekyll` มีไว้ให้ Pages เสิร์ฟไฟล์ตามที่เห็น ไม่ต้องผ่าน Jekyll
+
+## ภาพ preview สำหรับแชร์
+
+`og.png` สร้างจาก `tools/og.html` ซึ่งอ่านตัวเลขจาก `buildings.js` โดยตรง
+พอข้อมูลเปลี่ยนจนตัวเลขบนการ์ดไม่ตรง ให้สร้างใหม่:
+
+```
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+  --headless=new --disable-gpu --hide-scrollbars --force-device-scale-factor=2 \
+  --window-size=1200,630 --virtual-time-budget=9000 \
+  --screenshot=/tmp/og@2x.png --user-data-dir=/tmp/ogprof \
+  "file://$PWD/tools/og.html"
+sips -z 630 1200 /tmp/og@2x.png --out og.png
+```
+
+ตัวเลขในหัวเรื่องของหน้าเว็บ (`#h1sum`, `#eyebrow`, `#ledeA/B/C`) คำนวณจาก
+`BUILDINGS` ตอนโหลด ไม่ต้องแก้มือ แต่ข้อความใน `<meta name="description">`
+กับ OG tags เป็นข้อความคงที่ ต้องแก้เองเมื่อตัวเลขขยับมาก
+
+## หมายเหตุเรื่องโครงสร้างไฟล์
+
+`index.html` มี `<!doctype>`, `<head>`, `<meta viewport>` และ OG tags ครบ
+เพราะโฮสต์เองบน GitHub Pages ถ้าจะเอาไฟล์นี้ไปวางเป็น Claude Artifact
+ต้องตัดส่วน `<!doctype>` ถึง `<head>` ออก เพราะแพลตฟอร์มนั้นใส่ให้เองอยู่แล้ว
